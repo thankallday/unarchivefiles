@@ -5,8 +5,15 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
+import com.scholarone.activitytracker.ILog;
+import com.scholarone.activitytracker.ref.LogTrackerImpl;
+import com.scholarone.activitytracker.ref.LogType;
+
 public class ConfigPropertyValues
 {
+
+  private static ILog logger = null;
+
   private static final int EXPIRATION_TIME = 1; // minutes
 
   private static Properties prop = new Properties();
@@ -15,6 +22,15 @@ public class ConfigPropertyValues
 
   private static String propFileName = "unarchivefiles.properties";
 
+  public ConfigPropertyValues()
+  {
+    if (logger == null)
+    {
+      logger = new LogTrackerImpl(this.getClass().getName());
+    }  
+  }
+  
+  
   private static boolean isPropertiesExpired()
   {
     boolean expired = true;
@@ -49,9 +65,17 @@ public class ConfigPropertyValues
     return prop;
   }
 
-  public static String getProperty(String name) throws IOException
+  public static String getProperty(String name)
   {
-    String value = getPropValues(null).getProperty(name);
+    String value = "";
+    try
+    {
+      value = getPropValues(null).getProperty(name);
+    }
+    catch (IOException e)
+    {
+      logger.log(LogType.ERROR, "Failed to read environment - " + name + ". " + e.getMessage());
+    }
     
     if ( value != null ) value.trim();
     return value;

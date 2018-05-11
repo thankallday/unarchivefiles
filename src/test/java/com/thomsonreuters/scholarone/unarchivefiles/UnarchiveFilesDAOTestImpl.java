@@ -13,7 +13,7 @@ public class UnarchiveFilesDAOTestImpl extends UnarchiveFilesDAOImpl
   {
     boolean success = false;
 
-    String insertSQL = "insert into document (document_id, config_id, archive_status_id, archive_date, unarchive_move_retry_count, datetime_moved_tier3, datetime_added, added_by) values (0, 534, 24, current timestamp + 1 day, 0, current timestamp - 1 day, current timestamp, -3141593)";
+    String insertSQL = "insert into document (document_id, config_id, archive_status_id, archive_date, unarchive_move_retry_count, datetime_moved_tier3, datetime_archive_restore_req, datetime_added, added_by) values (0, 534, 24, current timestamp + 1 day, 0, current timestamp - 1 day, current timestamp, current timestamp, -3141593)";
     
     Statement statement = null;
     if (connection != null)

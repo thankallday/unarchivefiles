@@ -7,21 +7,20 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.thomsonreuters.scholarone.unarchivefiles.ITask;
-import com.thomsonreuters.scholarone.unarchivefiles.TaskFactoryImpl;
-import com.thomsonreuters.scholarone.unarchivefiles.TaskProcessor;
-
 @RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ContextConfiguration("classpath:applicationContextTest.xml")
 public class TaskProcessorTest
 {  
   @Test
-  public void testProcess()
+  public void testAProcess()
   {
     long count = 1000;
     
@@ -54,7 +53,7 @@ public class TaskProcessorTest
   }
   
   @Test
-  public void testProcessStop()
+  public void testBProcessStop()
   {
     long count = 10000;
     

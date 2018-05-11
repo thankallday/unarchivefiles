@@ -1,6 +1,5 @@
 package com.thomsonreuters.scholarone.unarchivefiles;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -8,6 +7,7 @@ import java.util.StringTokenizer;
 import com.scholarone.activitytracker.ILog;
 import com.scholarone.activitytracker.ref.LogTrackerImpl;
 import com.scholarone.activitytracker.ref.LogType;
+import com.scholarone.monitoring.common.Environment;
 
 public class TaskFactoryImpl implements ITaskFactory
 {
@@ -32,38 +32,23 @@ public class TaskFactoryImpl implements ITaskFactory
   @Override
   public List<ITask> getTasks()
   {
-    Integer documentCount = Integer.valueOf(100);
+    Integer documentCount = Integer.valueOf(ConfigPropertyValues.getProperty("documents.per.config." + stackId));
 
-    try
-    {
-      documentCount = Integer.valueOf(ConfigPropertyValues.getProperty("documents.per.config." + stackId));
-    }
-    catch (NumberFormatException | IOException e)
-    {
-      logger.log(LogType.WARN, "Failed to read documents.per.config." + stackId + ".  Using defaults. " + e.getMessage());
-    }
+    String  configIdStr = ConfigPropertyValues.getProperty("configs." + stackId);
 
-    String configIdStr = null;
+    Integer auditLevel = Integer.valueOf(ConfigPropertyValues.getProperty("audit.level." + stackId));
+    
+    String environment = ConfigPropertyValues.getProperty("environment");
 
-    try
-    {
-      configIdStr = ConfigPropertyValues.getProperty("configs." + stackId);
-    }
-    catch (NumberFormatException | IOException e)
-    {
-      logger.log(LogType.WARN, "Fail to read configs." + stackId + ".  Using defaults. " + e.getMessage());
-    }
+    String sourceBucket = ConfigPropertyValues.getProperty("source.bucket.name");
 
-    Integer auditLevel = Integer.valueOf(ITask.AUDIT);
+    String destinationBucket = ConfigPropertyValues.getProperty("destination.bucket.name");
 
-    try
-    {
-      auditLevel = Integer.valueOf(ConfigPropertyValues.getProperty("audit.level." + stackId));
-    }
-    catch (NumberFormatException | IOException e)
-    {
-      logger.log(LogType.WARN, "Fail to read audit.level." + stackId + ".  Using defaults. " + e.getMessage());
-    }
+    String prefixDirectory = ConfigPropertyValues.getProperty("prefix.directory");
+
+    String unarchiveCacheDir = ConfigPropertyValues.getProperty("unarchive.cache.dir"); //use for creating local file sand upload them to s3 bucket.
+
+    Environment envType = Environment.getEnvironmentType("DEV");
     
     IUnarchiveFilesDAO db = new UnarchiveFilesDAOImpl();
     List<ITask> tasks = new ArrayList<ITask>();
@@ -94,7 +79,7 @@ public class TaskFactoryImpl implements ITaskFactory
               {
                 try
                 {
-                  tasks.add(new RevertTask(stackId, config, document, runId, auditLevel.intValue()));
+                  tasks.add(new RevertTask(stackId, config, document, runId, auditLevel.intValue(), environment, unarchiveCacheDir, sourceBucket, destinationBucket, prefixDirectory, envType, environment));
                 }
                 catch (Exception e)
                 {

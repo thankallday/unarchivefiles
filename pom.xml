@@ -7,7 +7,7 @@
  
   <packaging>jar</packaging>
  
-  <version>1.0.9</version>
+  <version>1.0.10</version>
   <name>Unarchive Files</name>
   <url>http://maven.apache.org</url>
 
@@ -16,9 +16,52 @@
 		<junit.version>4.11</junit.version>
 		<project.build.sourceencoding>UTF-8</project.build.sourceencoding>
 		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+		<s1awscommon.version>1.0.45</s1awscommon.version>
 	</properties>
 
 	<dependencies>
+	   <dependency>
+      <groupId>com.scholarone</groupId>
+      <artifactId>s1awscommon</artifactId>
+      <version>${s1awscommon.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-jms_1.1_spec</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.amazonaws</groupId>
+          <artifactId>jmespath-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-s3</artifactId>
+      <version>1.11.188</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-core</artifactId>
+      <optional>false</optional>
+      <version>1.11.188</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-core</artifactId>
+      <optional>false</optional>
+      <version>1.11.188</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-elasticache</artifactId>
+      <version>1.11.188</version>
+    </dependency>
+
 	  <dependency>
       <groupId>com.scholarone</groupId>
       <artifactId>activitytracker</artifactId>
